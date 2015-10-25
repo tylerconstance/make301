@@ -8,7 +8,7 @@ Future modifications could allow for users to specify arguments from the command
 
 To use:
 Change the regsub command to substitute the proper uri for the redirects
-Use the proper "puts" command for the relevant rewrite rule style (Redirect 301 or RewriteRule – I don't know if it matters)
+Use the proper "puts" command for the rewrite rule style
 
 a) open terminal and enter "tclsh make301.tcl "
 or
