@@ -34,19 +34,22 @@ foreach i $list {
   # remove whitespace
   set uri [regsub -all " " $uri ""]
   set uri [regsub {http://www.meadowmere.com/} $uri ""]
-  set newUrl [lindex $list 7]
-  set newUrl [regsub -all " " $newUrl ""]
-  # Assign boolean to "query," and assign the string to queryString
-  set query [regexp {\?.*$} $uri queryString]
-  if $query {
-    #remove query string from uri
-    set uri [regsub {\?.*$} $uri ""]
-    #remove the leading "?" from the query string
-    set queryString [string trimleft $queryString ?]
-    puts $writeTo "RewriteCond \%\{QUERY_STRING\} \^$queryString\$\nRewriteRule \^$uri\$ $newUrl\? \[R=301,L\]"
-  } else {
-    # puts $writeTo "Redirect 301 [lindex $list 0] [lindex $list 7]"
-    puts $writeTo "RewriteRule \^$uri\$ $newUrl \[R=301,L\]"
+  # Make sure the $uri isn't empty so you're not inadvertently redirecting your homepage
+  if {$uri != ""} {
+    set newUrl [lindex $list 7]
+    set newUrl [regsub -all " " $newUrl ""]
+    # Assign boolean to "query," and assign the string to queryString
+    set query [regexp {\?.*$} $uri queryString]
+    if $query {
+      #remove query string from uri
+      set uri [regsub {\?.*$} $uri ""]
+      #remove the leading "?" from the query string
+      set queryString [string trimleft $queryString ?]
+      puts $writeTo "RewriteCond \%\{QUERY_STRING\} \^$queryString\$\nRewriteRule \^$uri\$ $newUrl\? \[R=301,L\]"
+    } else {
+      # puts $writeTo "Redirect 301 [lindex $list 0] [lindex $list 7]"
+      puts $writeTo "RewriteRule \^$uri\$ $newUrl \[R=301,L\]"
+    }
   }
 }
 close $writeTo
